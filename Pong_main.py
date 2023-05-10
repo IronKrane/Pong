@@ -1,6 +1,11 @@
 import pygame
+import os
 pygame.init()
+pygame.mixer.init()
 
+ABSOLUTE_PATH = os.path.dirname(__file__)
+BOUNCE_OFF_SOUND_FILE = os.path.join(ABSOLUTE_PATH, "254__noisecollector__pong-softsynth", "4374__noisecollector__pongblipf5.wav")
+BOUNCE_OFF_SOUND = pygame.mixer.Sound(BOUNCE_OFF_SOUND_FILE)
 WIDTH, HEIGHT = 700, 500
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 FONT = pygame.font.SysFont('consolas', 40)
@@ -85,6 +90,7 @@ def bounce_off(ball, paddle):                                          # this fu
     y_velocity = difference_in_Y_position / reduction_factor
     ball.y_velocity = -1 * y_velocity
     ball.x_velocity *= -1
+    BOUNCE_OFF_SOUND.play()
                 
 def handle_collision(ball, left_paddle, right_paddle):
     # collision check with floor and ceiling, if true reverse direction on Y axis
