@@ -78,10 +78,17 @@ def keys_input(left_paddle, right_paddle):
         right_paddle.move(move_down = False)
     if keys[pygame.K_DOWN] and right_paddle.y_position + PADDLE_VELOCITY + right_paddle.height <= HEIGHT:   # screen bottom boundary
         right_paddle.move(move_down = True)
+'''
     if keys[pygame.K_w] and left_paddle.y_position - PADDLE_VELOCITY > 0:                                   # screen top boundary
         left_paddle.move(move_down = False)
     if keys[pygame.K_s] and left_paddle.y_position + PADDLE_VELOCITY + left_paddle.height <= HEIGHT:        # screen bottom boundary
         left_paddle.move(move_down = True)
+'''
+def bot_opponent(ball, paddle):                                                 # simple, mildly effective computer opponent (scale with paddle move speed)
+    if ball.y_position <= paddle.y_position and ball.x_position <= WIDTH//2:    # tries to keep paddle on the level with the ball when it's on left half
+        paddle.move(move_down = False)
+    if ball.y_position > (paddle.y_position + paddle.height) and (ball.x_position <= WIDTH//2):
+        paddle.move(move_down = True)
                     
 def bounce_off(ball, paddle):                                          # this function pretends there is some physics in the game
     paddle_middle_y_position = paddle.y_position + (paddle.height / 2) # in short - the ball bounces differently depending where it collided with a paddle
@@ -162,6 +169,7 @@ def main():
         clock.tick(FPS)
         draw_game_loop(SCREEN, left_paddle, right_paddle, ball, left_score, right_score)
         keys_input(left_paddle, right_paddle)
+        bot_opponent(ball, left_paddle)
         ball.move()
         handle_collision(ball, left_paddle, right_paddle)
         # handle_collision_2(ball, left_paddle, right_paddle)
